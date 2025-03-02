@@ -24,6 +24,7 @@ export async function POST(request: Request) {
   switch (event.type) {
     case "checkout.session.completed":
       console.log("updating user access");
+      console.log(event.data.object.customer_email);
       await prisma.user.update({
         where: {
           email: event.data.object.customer_email,
