@@ -19,9 +19,11 @@ export async function POST(request: Request) {
     return Response.json(null, { status: 400 });
   }
 
+  console.log("flufilling order");
   // fulfill the order
   switch (event.type) {
     case "checkout.session.completed":
+      console.log("updating user access");
       await prisma.user.update({
         where: {
           email: event.data.object.customer_email,
@@ -30,6 +32,7 @@ export async function POST(request: Request) {
           hasAccess: true,
         },
       });
+      console.log("user access updated");
 
       break;
     default:
