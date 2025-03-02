@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
+    console.log("Webhook verification failed", error);
     return Response.json(null, { status: 400 });
   }
 
