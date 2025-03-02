@@ -15,16 +15,16 @@ export async function POST(request: Request) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    console.log("Webhook verification failed", error);
+    console.error("Webhook verification failed", error);
     return Response.json(null, { status: 400 });
   }
 
-  console.log("flufilling order");
+  console.error("flufilling order");
   // fulfill the order
   switch (event.type) {
     case "checkout.session.completed":
-      console.log("updating user access");
-      console.log(event.data.object.customer_email);
+      console.error("updating user access");
+      console.error(event.data.object.customer_email);
       await prisma.user.update({
         where: {
           email: event.data.object.customer_email,
@@ -33,11 +33,11 @@ export async function POST(request: Request) {
           hasAccess: true,
         },
       });
-      console.log("user access updated");
+      console.error("user access updated");
 
       break;
     default:
-      console.log(`Unhandled event type ${event.type}`);
+      console.error(`Unhandled event type ${event.type}`);
   }
 
   //return 200 OK
